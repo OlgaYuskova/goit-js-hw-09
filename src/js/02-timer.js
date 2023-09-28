@@ -12,13 +12,13 @@ let timerInterval;
 const options = {
   enableTime: true,
   time_24hr: true,
-  defaultDate: new Date(),
+  defaultDate: Date.now(),
   minuteIncrement: 1,
-  onClose(selectedDates) {
-    const selectedDate = selectedDates[0];
-    const currentDate = new Date();
+  onClose([selectedDates]) {
+    // const selectedDate = selectedDates[0];
+    const currentDate = Date.now();
 
-    if (selectedDate <= currentDate) {
+    if (selectedDates<= currentDate) {
       alert('Please choose a date in the future');
       buttonStartTimer.disabled = true;
     } else {
@@ -40,15 +40,20 @@ function onButtonStartTimer() {
 
   function updateTimerDisplay() {
     const selectedDate = new Date(inputDateTime.value).getTime();
-    const timeLeft = selectedDate - new Date().getTime();
-
+    const timeLeft = selectedDate - Date.now();
+    if (timeLeft <= 0) {
+      return
+    }
     const timeLeftObject = convertMs(timeLeft);
-    valuesEl[0].textContent = addLeadingZero(timeLeftObject.days);
-    valuesEl[1].textContent = addLeadingZero(timeLeftObject.hours);
-    valuesEl[2].textContent = addLeadingZero(timeLeftObject.minutes);
-    valuesEl[3].textContent = addLeadingZero(timeLeftObject.seconds);
+    convertTimes(timeLeftObject)
   }
 }
+function convertTimes(timeLeftObject) {
+  valuesEl[0].textContent = addLeadingZero(timeLeftObject.days);
+  valuesEl[1].textContent = addLeadingZero(timeLeftObject.hours);
+  valuesEl[2].textContent = addLeadingZero(timeLeftObject.minutes);
+  valuesEl[3].textContent = addLeadingZero(timeLeftObject.seconds);
+};
 
 function convertMs(ms) {
   const second = 1000;

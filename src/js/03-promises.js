@@ -1,11 +1,5 @@
 const form = document.querySelector('.form');
 
-const refs = {
-    delayInput: form.querySelector('[name="delay"]'),
-    stepInput: form.querySelector('[name="step"]'),
-    amountInput: form.querySelector('[name="amount"]'),
-  };
-
 function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
@@ -22,11 +16,11 @@ function createPromise(position, delay) {
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  const delay = parseInt(evt.target.elements.delay.value);
+  const step = parseInt(evt.target.elements.step.value);
+  const amount = parseInt(evt.target.elements.amount.value); 
   
-  const delay = parseInt(refs.delayInput.value);
-  const step = parseInt(refs.stepInput.value);
-  const amount = parseInt(refs.amountInput.value);
-
+  
   const promises = [];
 
   for (let i = 1; i <= amount; i++) {
